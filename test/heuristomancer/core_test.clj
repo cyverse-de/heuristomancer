@@ -161,6 +161,3 @@
 
 (deftest file-type-identification
   (dorun (map test-file-type-identification tests)))
-
-(deftest failing
-  (is (= 1 0)))
