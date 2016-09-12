@@ -1,3 +1,4 @@
+#!groovy
 def repo = "heuristomancer"
 def dockerUser = "discoenv"
 
