@@ -36,6 +36,7 @@
    ["clone-paired-reads.bed"  :bed]
    ["colored-lines.bed"       :bed]
    ["color-by-strand.bed"     :bed]
+   ["bigBedExample.bb"        :bigbed]
    ["blastp2215.blast"        :blast]
    ["bug2246.blast"           :blast]
    ["frac_problems.blast"     :blast]

@@ -14,6 +14,7 @@
  [:nexml     "ebnf/nexml.ebnf"]
  [:ace       "ebnf/ace.ebnf"]
  [:bed       "ebnf/bed.ebnf"]
+ [:bigbed    "ebnf/bigbed.ebnf"  :hex]
  [:blast     "ebnf/blast.ebnf"]
  [:bowtie    "ebnf/bowtie.ebnf"]
  [:clustalw  "ebnf/clustal.ebnf"]

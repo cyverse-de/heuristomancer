@@ -29,6 +29,10 @@
         (string/join " " (map str buf))))
     (catch Exception e "")))
 
+(defmethod bytes->string :hex
+  [converter bytes]
+  (reduce (fn [st b] (string/join [st (format "%02x" b)])) "" bytes))
+
 (defmethod bytes->string nil
   [converter bytes]
   (String. bytes))
