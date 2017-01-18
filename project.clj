@@ -1,4 +1,4 @@
-(defproject org.cyverse/heuristomancer "2.8.1"
+(defproject org.cyverse/heuristomancer "2.8.2-SNAPSHOT"
   :description "Clojure library for attempting to guess file types."
   :url "https://github.com/cyverse-de/heuristomancer"
   :license {:name "BSD Standard License"
