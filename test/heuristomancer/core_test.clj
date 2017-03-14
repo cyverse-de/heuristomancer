@@ -37,6 +37,7 @@
    ["colored-lines.bed"       :bed]
    ["color-by-strand.bed"     :bed]
    ["bigBedExample.bb"        :bigbed]
+   ["test.bigwig"             :bigwig]
    ["blastp2215.blast"        :blast]
    ["bug2246.blast"           :blast]
    ["frac_problems.blast"     :blast]
