@@ -73,7 +73,7 @@
   [args]
   (cli args
        ["-l" "--list" "List recognized file types." :default false :flag true]
-       ["-s" "--sample-size" "Sepcify the size of the sample." :parse-fn #(Integer. %)
+       ["-s" "--sample-size" "Specify the size of the sample." :parse-fn #(Integer. %)
         :default 1000]
        ["-h" "-?" "--help" "Show help." :default false :flag true]))
 
