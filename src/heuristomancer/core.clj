@@ -110,11 +110,19 @@
   (dorun (map (partial show-file-type sample-size) paths)))
 
 (defn identify-one-row
+  "Pulls the path out of `column-number` of `csv-data`, and then identifies
+  with `sample-size` and returns the CSV data with the type added as an
+  additional column (using 'unknown' if no type was detected). Returns nil if
+  the file does not exist."
   [column-number sample-size csv-data]
-  (let [path (nth csv-data (- column-number 1))
-        type (identify (input-stream path) sample-size)]
-    (print-type path type)
-    (conj csv-data (if (nil? type) "unknown" (name type)))))
+  (let [path (nth csv-data (- column-number 1))]
+    (if (.exists (as-file path))
+      (let [type (identify (input-stream path) sample-size)]
+        (print-type path type)
+        (conj csv-data (if (nil? type) "unknown" (name type))))
+      (do
+        (println path "- DOES NOT EXIST")
+        nil))))
 
 (defn process-csv
   [sample-size column-number csv-path output-path]
@@ -123,6 +131,7 @@
               csv-writer (writer output-path)]
     (->> (csv/read-csv csv-reader)
          (map #(identify-one-row column-number sample-size %))
+         (remove nil?)
          (csv/write-csv csv-writer))))
 
 (defn -main
