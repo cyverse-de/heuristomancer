@@ -1,10 +1,11 @@
 (ns heuristomancer.core
   (:gen-class)
-  (:use [clojure.java.io :only [reader input-stream]]
-        [clojure.tools.cli :only [cli]]
+  (:use [clojure.java.io :only [reader writer input-stream as-file]]
+        [clojure.tools.cli :only [parse-opts]]
         [heuristomancer.loader :only [load-parsers]])
   (:require [instaparse.core :as insta]
-            [clojure.string :as string])
+            [clojure.string :as string]
+            [clojure.data.csv :as csv])
   (:import [java.util.zip GZIPInputStream]
            [java.io ByteArrayInputStream]))
 
@@ -71,11 +72,14 @@
 (defn parse-args
   "Parses the command-line arguments."
   [args]
-  (cli args
-       ["-l" "--list" "List recognized file types." :default false :flag true]
-       ["-s" "--sample-size" "Specify the size of the sample." :parse-fn #(Integer. %)
+  (parse-opts args
+       [["-l" "--list" "List recognized file types." :id :list :default false]
+        ["-s" "--sample-size N" "Specify the size of the sample." :id :sample-size :parse-fn #(Integer. %)
         :default 1000]
-       ["-h" "-?" "--help" "Show help." :default false :flag true]))
+        ["-c" "--csv FILE" "Specify a CSV file to use as input. The output file will be the columns of this file plus one at the end for the identified type, or 'unknown' if unknown." :id :csv :default "" :validate [#(.exists (as-file %)) "Input CSV file must exist"]]
+        ["-n" "--column-number N" "Which column of the CSV to use as the input path." :id :column-number :default 4 :parse-fn #(Integer. %)]
+        ["-o" "--output FILE" "Specify an output file (for use with CSV mode). Defaults to 'heuristomancer.csv', and errors if the file already exists, unless the default is used. (Does NOT validate the existence or nonexistence of the default output file, use caution.)" :id :output :default "heuristomancer.csv" :validate [#(not (.exists (as-file %))) "Output file must not already exist"]]
+        ["-h" "-?" "--help" "Show help." :id :help :default false]]))
 
 (defn list-formats
   "Lists all of the formats currently recognized by this utility."
@@ -88,23 +92,45 @@
   []
   (mapv (comp name first) formats))
 
+(defn- print-type
+  [path t]
+  (if (nil? t)
+      (println path "- UNRECOGNIZED")
+      (println path "-" (name t))))
+
 (defn show-file-type
   "Shows the type of a single file or 'UNRECOGNIZED' if the file type can't be identified."
   [sample-size path]
   (let [type (identify (input-stream path) sample-size)]
-    (if (nil? type)
-      (println path "- UNRECOGNIZED")
-      (println path "-" (name type)))))
+    (print-type path type)))
 
 (defn show-file-types
   "Shows the types of a sequence of files."
   [sample-size paths]
   (dorun (map (partial show-file-type sample-size) paths)))
 
+(defn identify-one-row
+  [column-number sample-size csv-data]
+  (let [path (nth csv-data (- column-number 1))
+        type (identify (input-stream path) sample-size)]
+    (print-type path type)
+    (conj csv-data (if (nil? type) "unknown" (name type)))))
+
+(defn process-csv
+  [sample-size column-number csv-path output-path]
+  (println "Processing csv" csv-path "to" output-path)
+  (with-open [csv-reader (reader csv-path)
+              csv-writer (writer output-path)]
+    (->> (csv/read-csv csv-reader)
+         (map #(identify-one-row column-number sample-size %))
+         (csv/write-csv csv-writer))))
+
 (defn -main
   [& args]
-  (let [[opts args banner] (parse-args args)]
-    (cond
-     (:help opts) (println banner)
-     (:list opts) (list-formats)
-     :else        (show-file-types (:sample-size opts) args))))
+  (let [{:keys [options arguments summary errors]} (parse-args args)]
+    (if errors (println (string/join "\n" errors))
+     (cond
+      (:help options)                      (println summary)
+      (:list options)                      (list-formats)
+      (not (string/blank? (:csv options))) (process-csv (:sample-size options) (:column-number options) (:csv options) (:output options))
+      :else                                (show-file-types (:sample-size options) arguments)))))
