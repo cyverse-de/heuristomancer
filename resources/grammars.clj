@@ -48,5 +48,4 @@
  [:tsv       "ebnf/tsv.ebnf"]
  [:gde       "ebnf/gde.ebnf"]
  [:fasta     "ebnf/fasta.ebnf"]
- [:phylip    "ebnf/phylip.ebnf"]
- [:raw       "ebnf/raw.ebnf"]]
+ [:phylip    "ebnf/phylip.ebnf"]]

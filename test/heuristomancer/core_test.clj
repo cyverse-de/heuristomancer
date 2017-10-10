@@ -104,8 +104,6 @@
    ["dna.phylip"              :phylip]
    ["dna.pir"                 :pir]
    ["protein.pir"             :pir]
-   ["test.raw"                :raw]
-   ["test2.raw"               :raw]
    ["test.hmmer"              :hmmer]
    ["L77119.hmmer"            :hmmer]
    ["de-path-list.txt"        :ht-analysis-path-list]
