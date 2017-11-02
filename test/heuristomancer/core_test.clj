@@ -17,7 +17,9 @@
     (is (= expected (parse-test-file path)))))
 
 (def ^:private tests
-  [["foo.csh"                 :csh]
+  [["de-ht-path-list.txt"          :ht-analysis-path-list]
+   ["de-multi-input-path-list.txt" :multi-input-path-list]
+   ["foo.csh"                 :csh]
    ["foo.tcsh"                :tcsh]
    ["foo.sh"                  :sh]
    ["foo.bash"                :bash]
@@ -106,7 +108,6 @@
    ["protein.pir"             :pir]
    ["test.hmmer"              :hmmer]
    ["L77119.hmmer"            :hmmer]
-   ["de-path-list.txt"        :ht-analysis-path-list]
    ["test.mase"               :mase]
    ["test2.mase"              :mase]
    ["test3.mase"              :mase]
