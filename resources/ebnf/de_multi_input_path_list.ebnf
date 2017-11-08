@@ -1,0 +1,1 @@
+S = #"^#[\s]*application/vnd.de.multi-input-path-list\+csv;[\s]*version=[\s\S]*"

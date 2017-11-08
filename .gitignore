@@ -18,3 +18,4 @@ pom.xml.asc
 test2junit
 build.xml
 heuristomancer.csv
+*.iml
