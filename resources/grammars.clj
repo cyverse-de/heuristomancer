@@ -32,6 +32,7 @@
  [:genbank   "ebnf/genbank.ebnf"]
  [:genscan   "ebnf/genscan.ebnf"]
  [:vcf       "ebnf/vcf.ebnf"]
+ [:vcfgz     "ebnf/vcf.ebnf" :gzipstr]
  [:gtf       "ebnf/gtf.ebnf"]
  [:gff       "ebnf/gff.ebnf"]
  [:hmmer     "ebnf/hmmer.ebnf"]

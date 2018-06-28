@@ -30,6 +30,19 @@
         (string/join " " (map str buf))))
     (catch Exception e "")))
 
+(defmethod bytes->string :gzipstr
+  [converter bytes]
+  (try
+    (let [bis   (ByteArrayInputStream. bytes)
+          gis   (GZIPInputStream. bis)
+          limit (count bytes)
+          buf   (byte-array limit)
+          len   (.read gis buf 0 limit)]
+      (if (= len -1)
+        ""
+        (String. buf)))
+    (catch Exception e "")))
+
 (defmethod bytes->string :hex
   [converter bytes]
   (reduce (fn [st b] (string/join [st (format "%02x" b)])) "" bytes))

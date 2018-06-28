@@ -120,6 +120,8 @@
    ["test.rsf"                :rsf]
    ["test.vcf"                :vcf]
    ["example.vcf"             :vcf]
+   ["test.vcf.gz"             :vcfgz]
+   ["example.vcf.gz"          :vcfgz]
    ["SRR013472.sff"           :sff]
    ["test.stockholm"          :stockholm]
    ["test.swiss"              :swiss]
