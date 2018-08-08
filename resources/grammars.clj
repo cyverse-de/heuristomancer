@@ -16,6 +16,7 @@
  [:nexml     "ebnf/nexml.ebnf"]
  [:ace       "ebnf/ace.ebnf"]
  [:bed       "ebnf/bed.ebnf"]
+ [:bedgz     "ebnf/bed.ebnf" :gzipstr]
  [:bigbed    "ebnf/bigbed.ebnf"  :hex]
  [:bigwig    "ebnf/bigwig.ebnf"  :hex]
  [:blast     "ebnf/blast.ebnf"]
