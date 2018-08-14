@@ -38,6 +38,7 @@
    ["clone-paired-reads.bed"  :bed]
    ["colored-lines.bed"       :bed]
    ["color-by-strand.bed"     :bed]
+   ["GSM429321.gz"            :bedgz]
    ["bigBedExample.bb"        :bigbed]
    ["test.bigwig"             :bigwig]
    ["blastp2215.blast"        :blast]
