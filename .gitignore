@@ -19,3 +19,7 @@ test2junit
 build.xml
 heuristomancer.csv
 *.iml
+.clj-kondo
+.eastwood
+.lsp
+.nrepl-port

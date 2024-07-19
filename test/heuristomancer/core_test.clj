@@ -1,7 +1,7 @@
 (ns heuristomancer.core-test
   (:use [clojure.test]
         [clojure.java.io :only [input-stream]]
-        [heuristomancer.core]
+        [heuristomancer.core :only [identify]]
         [heuristomancer.loader :only [resource-reader resource-stream]]))
 
 (defn- parse-test-file
@@ -9,6 +9,8 @@
   [path]
   (with-open [r (resource-stream path)]
     (identify r)))
+
+(parse-test-file "de-ht-path-list.txt")
 
 (defn- test-file-type-identification
   "Verifies that a file type is identified correctly."
