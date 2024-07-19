@@ -1,13 +1,13 @@
 (ns heuristomancer.core
   (:gen-class)
-  (:use [clojure.java.io :only [reader writer input-stream as-file]]
-        [clojure.tools.cli :only [parse-opts]]
-        [heuristomancer.loader :only [load-parsers]])
-  (:require [instaparse.core :as insta]
+  (:require [clojure.data.csv :as csv]
+            [clojure.java.io :refer [reader writer input-stream as-file]]
             [clojure.string :as string]
-            [clojure.data.csv :as csv])
+            [clojure.tools.cli :refer [parse-opts]]
+            [heuristomancer.loader :refer [load-parsers]]
+            [instaparse.core :as insta])
   (:import [java.util.zip GZIPInputStream]
-           [java.io ByteArrayInputStream]))
+           [java.io ByteArrayInputStream InputStream]))
 
 (def ^:private default-sample-size
   "The default sample size to use."
@@ -49,12 +49,12 @@
 
 (defmethod bytes->string nil
   [converter bytes]
-  (String. bytes))
+  (slurp bytes))
 
 (defn sip
   "Reads in 'limit' number of bytes from input-stream. Returns a byte-array."
   [input-stream limit]
-  (with-open [r input-stream]
+  (with-open [^InputStream r input-stream]
     (let [buf (byte-array limit)
           len (.read r buf 0 limit)]
       (if (= len -1)  ; EOF
@@ -87,10 +87,10 @@
   [args]
   (parse-opts args
        [["-l" "--list" "List recognized file types." :id :list :default false]
-        ["-s" "--sample-size N" "Specify the size of the sample." :id :sample-size :parse-fn #(Integer. %)
+        ["-s" "--sample-size N" "Specify the size of the sample." :id :sample-size :parse-fn #(Integer/parseInt %)
         :default 1000]
         ["-c" "--csv FILE" "Specify a CSV file to use as input. The output file will be the columns of this file plus one at the end for the identified type, or 'unknown' if unknown." :id :csv :default "" :validate [#(.exists (as-file %)) "Input CSV file must exist"]]
-        ["-n" "--column-number N" "Which column of the CSV to use as the input path." :id :column-number :default 4 :parse-fn #(Integer. %)]
+        ["-n" "--column-number N" "Which column of the CSV to use as the input path." :id :column-number :default 4 :parse-fn #(Integer/parseInt %)]
         ["-o" "--output FILE" "Specify an output file (for use with CSV mode). Defaults to 'heuristomancer.csv', and errors if the file already exists, unless the default is used. (Does NOT validate the existence or nonexistence of the default output file, use caution.)" :id :output :default "heuristomancer.csv" :validate [#(not (.exists (as-file %))) "Output file must not already exist"]]
         ["-h" "-?" "--help" "Show help." :id :help :default false]]))
 

@@ -1,7 +1,7 @@
 (ns heuristomancer.loader
-  (:use [clojure.java.io :only [reader]])
-  (:require [instaparse.core :as insta])
-  (:import [java.io PushbackReader]))
+  (:require [clojure.java.io :refer [reader]]
+            [instaparse.core :as insta])
+  (:import [java.io PushbackReader InputStream]))
 
 (def ^:private grammar-list-file "grammars.clj")
 
@@ -13,7 +13,7 @@
       (.getResourceAsStream resource-name)
       (reader)))
 
-(defn resource-stream
+(defn ^InputStream resource-stream
   "Obtains an input stream for a named resource."
   [resource-name]
   (-> (Thread/currentThread)
