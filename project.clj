@@ -6,6 +6,9 @@
   :profiles {:dev {:resource-paths ["test-data"]}}
   :deploy-repositories [["releases" :clojars]
                         ["snapshots" :clojars]]
+  ;; Fail the build on a new dependency conflict rather than printing a
+  ;; warning nobody reads.
+  :pedantic? :abort
   :dependencies [[org.clojure/clojure "1.12.5"]
                  [org.clojure/data.csv "1.1.1"]
                  [org.clojure/tools.cli "1.4.256"]
